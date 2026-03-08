@@ -8,6 +8,11 @@ module.exports = {
   mongoUri: process.env.MONGO_URI || "",
   mongoDbName: process.env.MONGO_DB_NAME || "rag_policy_db",
   mongoCollectionName: process.env.MONGO_COLLECTION_NAME || "policy_chunks",
+  complaintCollectionName:
+    process.env.MONGO_COMPLAINT_COLLECTION_NAME || "complaints",
+  departmentCollectionName:
+    process.env.MONGO_DEPARTMENT_COLLECTION_NAME || "departments",
+  areaCollectionName: process.env.MONGO_AREA_COLLECTION_NAME || "areas",
   mongoVectorIndexName:
     process.env.MONGO_VECTOR_INDEX_NAME || "policy_chunks_vector_index",
   embeddingModel: process.env.EMBED_MODEL_NAME || "BAAI/bge-m3",

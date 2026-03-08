@@ -10,6 +10,7 @@ let embedRl;
 let workerReady = false;
 let reqSeq = 0;
 const pending = new Map();
+const NO_DATA_TEXT = "data not available, pls try asking again";
 
 function startEmbedWorker() {
   if (embedWorker && !embedWorker.killed) return;
@@ -205,6 +206,211 @@ async function answerWithRag(question, topK = 5) {
   return { answer, citations };
 }
 
+function parseGovEmpIntent(question) {
+  const q = question.toLowerCase();
+  const pendingWords = ["pending", "not solved", "open", "in progress"];
+  const resolvedWords = ["resolved", "closed", "completed", "solved"];
+
+  const departmentMatch = question.match(
+    /department\s+(?:named|name|called)?\s*[:\-]?\s*([a-z0-9&().,\- ]+)/i
+  );
+  const areaMatch = question.match(
+    /(area|ward|zone|panchayat|city|village|locality)\s+(?:named|name|called)?\s*[:\-]?\s*([a-z0-9&().,\- ]+)/i
+  );
+  const contractorMatch = question.match(
+    /(contractor|vendor)\s+(?:named|name|called)?\s*[:\-]?\s*([a-z0-9&().,\- ]+)/i
+  );
+
+  const wantsDeptWise =
+    q.includes("department wise") || q.includes("by department");
+  const wantsAreaWise = q.includes("area wise") || q.includes("by area");
+
+  let status = "any";
+  if (pendingWords.some((w) => q.includes(w))) status = "pending";
+  if (resolvedWords.some((w) => q.includes(w))) status = "resolved";
+
+  return {
+    status,
+    departmentName: (departmentMatch?.[1] || "").trim(),
+    areaName: (areaMatch?.[2] || "").trim(),
+    contractorName: (contractorMatch?.[2] || "").trim(),
+    wantsDeptWise,
+    wantsAreaWise,
+  };
+}
+
+function statusRegexForIntent(status) {
+  if (status === "pending") {
+    return /registered|open|in[-_\s]?progress|pending|assigned|investigating|reopened/i;
+  }
+  if (status === "resolved") {
+    return /resolved|closed|completed|done|solved|fixed/i;
+  }
+  return null;
+}
+
+function textContains(value, search) {
+  if (!value || !search) return false;
+  return String(value).toLowerCase().includes(String(search).toLowerCase());
+}
+
+async function answerGovEmployeeFromDb(question) {
+  const db = await getDb();
+  const complaintsCol = db.collection(config.complaintCollectionName);
+  const departmentsCol = db.collection(config.departmentCollectionName);
+  const areasCol = db.collection(config.areaCollectionName);
+
+  const complaintCount = await complaintsCol.countDocuments({});
+  if (complaintCount === 0) {
+    return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+  }
+
+  const intent = parseGovEmpIntent(question);
+  const statusRegex = statusRegexForIntent(intent.status);
+  const complaintMatch = {};
+  if (statusRegex) complaintMatch.status = { $regex: statusRegex };
+
+  if (intent.wantsDeptWise) {
+    const rows = await complaintsCol
+      .aggregate([
+        { $match: complaintMatch },
+        {
+          $lookup: {
+            from: config.departmentCollectionName,
+            localField: "departmentId",
+            foreignField: "_id",
+            as: "department",
+          },
+        },
+        {
+          $addFields: {
+            departmentName: {
+              $ifNull: [{ $arrayElemAt: ["$department.name", 0] }, "Unassigned"],
+            },
+          },
+        },
+        { $group: { _id: "$departmentName", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ])
+      .toArray();
+
+    if (!rows.length) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+    const lines = rows.map((r) => `${r._id}: ${r.count}`).join(", ");
+    const factual = `Complaint counts by department: ${lines}.`;
+    const answer = await generateGovEmpOllamaAnswer(question, factual);
+    return { answer, citations: [], mode: "govemp_db" };
+  }
+
+  if (intent.wantsAreaWise) {
+    const rows = await complaintsCol
+      .aggregate([
+        { $match: complaintMatch },
+        {
+          $lookup: {
+            from: config.areaCollectionName,
+            localField: "areaId",
+            foreignField: "_id",
+            as: "area",
+          },
+        },
+        {
+          $addFields: {
+            areaName: { $ifNull: [{ $arrayElemAt: ["$area.name", 0] }, "$location"] },
+          },
+        },
+        { $group: { _id: "$areaName", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ])
+      .toArray();
+
+    if (!rows.length) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+    const lines = rows.map((r) => `${r._id || "Unknown"}: ${r.count}`).join(", ");
+    const factual = `Complaint counts by area: ${lines}.`;
+    const answer = await generateGovEmpOllamaAnswer(question, factual);
+    return { answer, citations: [], mode: "govemp_db" };
+  }
+
+  let departmentDoc = null;
+  if (intent.departmentName) {
+    const deptCandidates = await departmentsCol.find({}, { projection: { name: 1 } }).toArray();
+    departmentDoc =
+      deptCandidates.find((d) => textContains(d.name, intent.departmentName)) || null;
+    if (!departmentDoc) {
+      return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+    }
+    complaintMatch.departmentId = departmentDoc._id;
+  }
+
+  let areaDoc = null;
+  if (intent.areaName) {
+    const areaCandidates = await areasCol.find({}, { projection: { name: 1 } }).toArray();
+    areaDoc = areaCandidates.find((a) => textContains(a.name, intent.areaName)) || null;
+    if (areaDoc) {
+      complaintMatch.areaId = areaDoc._id;
+    } else {
+      complaintMatch.location = { $regex: intent.areaName, $options: "i" };
+    }
+  }
+
+  if (intent.contractorName) {
+    complaintMatch.$or = [
+      { contractorName: { $regex: intent.contractorName, $options: "i" } },
+      { contractor: { $regex: intent.contractorName, $options: "i" } },
+      { assignedContractor: { $regex: intent.contractorName, $options: "i" } },
+    ];
+  }
+
+  const count = await complaintsCol.countDocuments(complaintMatch);
+  if (!count) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+
+  const filters = [];
+  if (intent.status !== "any") filters.push(intent.status);
+  if (departmentDoc?.name) filters.push(`department ${departmentDoc.name}`);
+  if (areaDoc?.name) filters.push(`area ${areaDoc.name}`);
+  else if (intent.areaName) filters.push(`area ${intent.areaName}`);
+  if (intent.contractorName) filters.push(`contractor ${intent.contractorName}`);
+
+  const suffix = filters.length ? ` for ${filters.join(", ")}` : "";
+  const factual = `Total complaints${suffix}: ${count}.`;
+  const answer = await generateGovEmpOllamaAnswer(question, factual);
+  return { answer, citations: [], mode: "govemp_db" };
+}
+
+async function generateGovEmpOllamaAnswer(question, factualLine) {
+  try {
+    const prompt = [
+      "You are a government complaint assistant.",
+      "Respond in 1-2 clear sentences for an employee dashboard.",
+      "Use only the factual data provided below.",
+      "Do not invent numbers or entities.",
+      "",
+      `Question: ${question}`,
+      `Factual data: ${factualLine}`,
+    ].join("\n");
+
+    const completion = await callOllamaGenerate({
+      baseUrl: config.ollamaBaseUrl,
+      timeoutMs: config.ollamaTimeoutMs,
+      payload: {
+        model: config.ollamaChatModel,
+        prompt,
+        stream: false,
+        options: {
+          temperature: 0.1,
+          num_predict: Math.min(config.ollamaNumPredict, 96),
+        },
+      },
+    });
+    const text = String(completion.response || "").trim();
+    return text || factualLine;
+  } catch (err) {
+    console.error("[RAG] GovEmp Ollama generation failed, using factual fallback:", err.message);
+    return factualLine;
+  }
+}
+
 function callOllamaGenerate({ baseUrl, payload, timeoutMs }) {
   return new Promise((resolve, reject) => {
     const endpoint = new URL("/api/generate", baseUrl);
@@ -251,4 +457,4 @@ function callOllamaGenerate({ baseUrl, payload, timeoutMs }) {
   });
 }
 
-module.exports = { answerWithRag };
+module.exports = { answerWithRag, answerGovEmployeeFromDb };
