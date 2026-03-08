@@ -1,0 +1,85 @@
+[
+  {
+    "url": "https://kla.kar.nic.in/assembly/legislation/legislation.htm",
+    "reason": "low_content",
+    "text_length": 26,
+    "resolved_url": "https://kla.kar.nic.in/assembly/legislation/legislation.htm"
+  },
+  {
+    "url": "https://kla.kar.nic.in/assembly/gazette/gazette.htm",
+    "reason": "low_content",
+    "text_length": 110,
+    "resolved_url": "https://kla.kar.nic.in/assembly/gazette/gazette.htm"
+  },
+  {
+    "url": "https://kla.kar.nic.in/assembly/bills/bills.htm",
+    "reason": "low_content",
+    "text_length": 110,
+    "resolved_url": "https://kla.kar.nic.in/assembly/bills/bills.htm"
+  },
+  {
+    "url": "https://kuwsdb.karnataka.gov.in/english",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://kuwsdb.karnataka.gov.in/english: 500 Server Error: Internal Server Error for url: https://kuwsdb.karnataka.gov.in/english"
+  },
+  {
+    "url": "https://pwd.karnataka.gov.in/",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://pwd.karnataka.gov.in/: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)\"))"
+  },
+  {
+    "url": "https://pwd.karnataka.gov.in/english",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://pwd.karnataka.gov.in/english: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError(\"HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)\"))"
+  },
+  {
+    "url": "https://dma.karnataka.gov.in/",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://dma.karnataka.gov.in/: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)\"))"
+  },
+  {
+    "url": "https://dma.karnataka.gov.in/english",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://dma.karnataka.gov.in/english: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError(\"HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)\"))"
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/english",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://ksdma.karnataka.gov.in/english: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))"
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/31/institutional-mechanism/en",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://ksdma.karnataka.gov.in/31/institutional-mechanism/en: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))"
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))"
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))"
+  },
+  {
+    "url": "https://sdma.karnataka.gov.in/",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://sdma.karnataka.gov.in/: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)\"))"
+  },
+  {
+    "url": "https://eproc.karnataka.gov.in/",
+    "reason": "empty_extraction",
+    "resolved_url": "https://eproc.karnataka.gov.in/"
+  },
+  {
+    "url": "https://eproc.karnataka.gov.in/eportal/index.seam",
+    "reason": "request_failed",
+    "error": "All attempts failed for https://eproc.karnataka.gov.in/eportal/index.seam: 404 Client Error: Not Found for url: https://eproc.karnataka.gov.in/eportal/index.seam"
+  },
+  {
+    "url": "https://bbmp.gov.in/",
+    "reason": "empty_extraction",
+    "resolved_url": "https://bbmp.gov.in/"
+  }
+]

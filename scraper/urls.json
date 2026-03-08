@@ -1,0 +1,242 @@
+[
+  {
+    "url": "https://dpal.karnataka.gov.in/",
+    "title": "Department of Parliamentary Affairs and Legislation",
+    "category": "governance_framework",
+    "type": "legal_source",
+    "priority": "high",
+    "focus_topics": ["municipal_acts", "state_legislation"]
+  },
+  {
+    "url": "https://kla.kar.nic.in/assembly/legislation/legislation.htm",
+    "title": "Karnataka Legislature - Legislation",
+    "category": "governance_framework",
+    "type": "legal_source",
+    "priority": "high",
+    "focus_topics": ["acts", "bills", "legislative_texts"]
+  },
+  {
+    "url": "https://kla.kar.nic.in/assembly/gazette/gazette.htm",
+    "title": "Karnataka Legislature - Gazette",
+    "category": "governance_framework",
+    "type": "legal_source",
+    "priority": "medium",
+    "focus_topics": ["notified_rules", "amendments"]
+  },
+  {
+    "url": "https://kla.kar.nic.in/assembly/bills/bills.htm",
+    "title": "Karnataka Legislature - Bills",
+    "category": "governance_framework",
+    "type": "legal_source",
+    "priority": "medium",
+    "focus_topics": ["draft_laws", "local_governance_reforms"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/40/important-policy-documents-and-rules/en",
+    "title": "RDPR - Important Policy Documents and Rules",
+    "category": "governance_framework",
+    "type": "legal_source",
+    "priority": "high",
+    "focus_topics": ["gram_swaraj_act", "panchayat_rules", "finance_rules"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/storage/pdf-files/PR%20ACT/Panchayat_Raj_Act.pdf",
+    "title": "Karnataka Gram Swaraj and Panchayat Raj Act, 1993 (PDF)",
+    "category": "governance_framework",
+    "type": "act_pdf",
+    "priority": "high",
+    "focus_topics": ["gram_panchayat_powers", "functions", "taxation", "committees"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/42/the-karnataka-state-decentralised-planning-and-development-committee/en",
+    "title": "RDPR - Decentralised Planning and Development Committee",
+    "category": "governance_framework",
+    "type": "policy_page",
+    "priority": "medium",
+    "focus_topics": ["district_planning", "rural_urban_plan_integration"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/",
+    "title": "Rural Development and Panchayat Raj Department",
+    "category": "governance_framework",
+    "type": "department_home",
+    "priority": "high",
+    "focus_topics": ["panchayat_raj", "rural_governance"]
+  },
+  {
+    "url": "https://kuwsdb.karnataka.gov.in/",
+    "title": "Karnataka Urban Water Supply and Drainage Board",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "high",
+    "focus_topics": ["water_connection", "service_standards", "maintenance"]
+  },
+  {
+    "url": "https://kuwsdb.karnataka.gov.in/english",
+    "title": "KUWSDB - English Portal",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "medium",
+    "focus_topics": ["urban_water_services", "application_processes"]
+  },
+  {
+    "url": "https://pwd.karnataka.gov.in/",
+    "title": "Public Works Department Karnataka",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "high",
+    "focus_topics": ["road_maintenance", "repair_standards", "contractor_norms"]
+  },
+  {
+    "url": "https://pwd.karnataka.gov.in/english",
+    "title": "PWD - English Portal",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "medium",
+    "focus_topics": ["maintenance_guidelines", "works_procedures"]
+  },
+  {
+    "url": "https://dma.karnataka.gov.in/",
+    "title": "Directorate of Municipal Administration",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "high",
+    "focus_topics": ["solid_waste", "municipal_responsibilities", "public_health"]
+  },
+  {
+    "url": "https://dma.karnataka.gov.in/english",
+    "title": "DMA - English Portal",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "medium",
+    "focus_topics": ["urban_services", "municipal_guidelines"]
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/english",
+    "title": "Karnataka State Disaster Management Authority",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "high",
+    "focus_topics": ["flood_response", "disaster_protocols", "relief_framework"]
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/31/institutional-mechanism/en",
+    "title": "KSDMA - Institutional Mechanism",
+    "category": "departmental_policies",
+    "type": "policy_page",
+    "priority": "high",
+    "focus_topics": ["local_authority_role", "dm_act_2005", "district_coordination"]
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en",
+    "title": "KSDMA - Mission",
+    "category": "departmental_policies",
+    "type": "policy_page",
+    "priority": "medium",
+    "focus_topics": ["disaster_resilience", "preparedness", "mitigation"]
+  },
+  {
+    "url": "https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf",
+    "title": "Flood Risk Management Action Plan (PDF)",
+    "category": "departmental_policies",
+    "type": "policy_pdf",
+    "priority": "high",
+    "focus_topics": ["flood_action_plan", "alerts", "response_workflow"]
+  },
+  {
+    "url": "https://sdma.karnataka.gov.in/",
+    "title": "SDMA Karnataka Portal",
+    "category": "departmental_policies",
+    "type": "department_home",
+    "priority": "medium",
+    "focus_topics": ["disaster_management", "state_notifications"]
+  },
+  {
+    "url": "https://eproc.karnataka.gov.in/",
+    "title": "Karnataka Public Procurement Portal",
+    "category": "administrative_procedures",
+    "type": "service_portal",
+    "priority": "high",
+    "focus_topics": ["tender_procedure", "bid_workflow", "contractor_eligibility"]
+  },
+  {
+    "url": "https://eproc.karnataka.gov.in/eportal/index.seam",
+    "title": "Karnataka eProcurement - ePortal",
+    "category": "administrative_procedures",
+    "type": "service_portal",
+    "priority": "high",
+    "focus_topics": ["tender_submission", "bid_stages", "procurement_process"]
+  },
+  {
+    "url": "https://sakala.karnataka.gov.in/",
+    "title": "Karnataka Sakala Services Portal",
+    "category": "administrative_procedures",
+    "type": "service_portal",
+    "priority": "high",
+    "focus_topics": ["sla_timelines", "service_guarantee", "escalation"]
+  },
+  {
+    "url": "http://sakala.kar.nic.in",
+    "title": "Sakala Mission (NIC)",
+    "category": "administrative_procedures",
+    "type": "service_portal",
+    "priority": "medium",
+    "focus_topics": ["gsc_number", "grievance_redressal", "citizen_rights"]
+  },
+  {
+    "url": "https://bangalorerural.nic.in/en/service/sakala-guarantee-of-services-to-citizens/",
+    "title": "Sakala - Guarantee of Services (Bengaluru Rural District)",
+    "category": "administrative_procedures",
+    "type": "reference_page",
+    "priority": "medium",
+    "focus_topics": ["act_summary", "time_bound_services"]
+  },
+  {
+    "url": "https://bengaluruurban.nic.in/en/service/sakala-services/",
+    "title": "Sakala Services (Bengaluru Urban District)",
+    "category": "administrative_procedures",
+    "type": "reference_page",
+    "priority": "medium",
+    "focus_topics": ["service_delivery", "appeals", "public_service_tracking"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/89/panchayat-raj-matter/en",
+    "title": "RDPR - Panchayat Raj Matter",
+    "category": "administrative_procedures",
+    "type": "department_page",
+    "priority": "medium",
+    "focus_topics": ["local_orders", "governance_procedure", "panchayat_administration"]
+  },
+  {
+    "url": "https://bbmp.gov.in/",
+    "title": "BBMP Official Portal",
+    "category": "citizen_services",
+    "type": "service_portal",
+    "priority": "high",
+    "focus_topics": ["building_plan_approval", "property_tax", "urban_services"]
+  },
+  {
+    "url": "https://bbmptax.karnataka.gov.in/",
+    "title": "BBMP Property Tax Portal",
+    "category": "citizen_services",
+    "type": "service_portal",
+    "priority": "high",
+    "focus_topics": ["assessment", "payment_methods", "penalty_process"]
+  },
+  {
+    "url": "https://rdpr.karnataka.gov.in/",
+    "title": "RDPR - Citizen-Centric Rural Services",
+    "category": "citizen_services",
+    "type": "department_home",
+    "priority": "medium",
+    "focus_topics": ["rural_schemes", "panchayat_services", "eligibility"]
+  },
+  {
+    "url": "https://sevasindhu.karnataka.gov.in/",
+    "title": "Seva Sindhu Karnataka Services",
+    "category": "citizen_services",
+    "type": "service_portal",
+    "priority": "medium",
+    "focus_topics": ["service_applications", "documents_required", "workflow"]
+  }
+]

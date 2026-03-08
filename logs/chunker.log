@@ -1,0 +1,3 @@
+2026-03-01 00:38:07,887 | INFO | Starting chunking...
+2026-03-01 00:38:07,914 | INFO | Loaded 14 docs and generated 148 chunks
+2026-03-01 00:38:07,914 | INFO | Saved chunks to D:\SANK\Projects\rag_pipeline\data\chunks\chunks.json

@@ -1,0 +1,1068 @@
+2026-03-01 00:23:45,300 | INFO | Starting scraper...
+2026-03-01 00:23:45,301 | INFO | Loaded 30 URL entries
+2026-03-01 00:23:47,500 | INFO | Scraped https://dpal.karnataka.gov.in/ (len=3621)
+2026-03-01 00:23:48,320 | INFO | Scraped https://kla.kar.nic.in/assembly/legislation/legislation.htm (len=26)
+2026-03-01 00:23:49,026 | INFO | Scraped https://kla.kar.nic.in/assembly/gazette/gazette.htm (len=110)
+2026-03-01 00:23:49,744 | INFO | Scraped https://kla.kar.nic.in/assembly/bills/bills.htm (len=110)
+2026-03-01 00:23:51,719 | INFO | Scraped https://rdpr.karnataka.gov.in/40/important-policy-documents-and-rules/en (len=3205)
+2026-03-01 00:23:53,231 | INFO | Scraped https://rdpr.karnataka.gov.in/storage/pdf-files/PR%20ACT/Panchayat_Raj_Act.pdf (len=747)
+2026-03-01 00:23:55,305 | INFO | Scraped https://rdpr.karnataka.gov.in/42/the-karnataka-state-decentralised-planning-and-development-committee/en (len=20544)
+2026-03-01 00:24:00,482 | INFO | Scraped https://rdpr.karnataka.gov.in/ (len=3621)
+2026-03-01 00:24:01,890 | INFO | Scraped https://kuwsdb.karnataka.gov.in/ (len=3621)
+2026-03-01 00:24:02,508 | ERROR | Failed scraping https://kuwsdb.karnataka.gov.in/english: 500 Server Error: Internal Server Error for url: https://kuwsdb.karnataka.gov.in/english
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 91, in fetch_url
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: https://kuwsdb.karnataka.gov.in/english
+2026-03-01 00:24:02,637 | ERROR | Failed scraping https://pwd.karnataka.gov.in/: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:02,870 | ERROR | Failed scraping https://pwd.karnataka.gov.in/english: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:02,999 | ERROR | Failed scraping https://dma.karnataka.gov.in/: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:03,006 | ERROR | Failed scraping https://dma.karnataka.gov.in/english: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:03,492 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/english: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:24:03,859 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/31/institutional-mechanism/en: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:24:04,240 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:24:04,632 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:24:04,799 | ERROR | Failed scraping https://sdma.karnataka.gov.in/: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:05,342 | WARNING | No text extracted for https://eproc.karnataka.gov.in/
+2026-03-01 00:24:05,877 | ERROR | Failed scraping https://eproc.karnataka.gov.in/eportal/index.seam: 404 Client Error: Not Found for url: https://eproc.karnataka.gov.in/eportal/index.seam
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 91, in fetch_url
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://eproc.karnataka.gov.in/eportal/index.seam
+2026-03-01 00:24:05,968 | ERROR | Failed scraping https://sakala.karnataka.gov.in/: HTTPSConnectionPool(host='sakala.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sakala.karnataka.gov.in', port=443): Failed to resolve 'sakala.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='sakala.karnataka.gov.in', port=443): Failed to resolve 'sakala.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sakala.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sakala.karnataka.gov.in', port=443): Failed to resolve 'sakala.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sakala.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sakala.karnataka.gov.in', port=443): Failed to resolve 'sakala.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:24:07,823 | INFO | Scraped http://sakala.kar.nic.in (len=5542)
+2026-03-01 00:24:09,462 | INFO | Scraped https://bangalorerural.nic.in/en/service/sakala-guarantee-of-services-to-citizens/ (len=575)
+2026-03-01 00:24:10,380 | INFO | Scraped https://bengaluruurban.nic.in/en/service/sakala-services/ (len=537)
+2026-03-01 00:24:12,901 | INFO | Scraped https://rdpr.karnataka.gov.in/89/panchayat-raj-matter/en (len=85164)
+2026-03-01 00:24:13,304 | ERROR | Failed scraping https://bbmp.gov.in/: HTTPSConnectionPool(host='bbmp.gov.in', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\urllib3\util\retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='bbmp.gov.in', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 104, in scrape_documents
+    html = fetch_url(url)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 90, in fetch_url
+    response = requests.get(url, headers=headers, timeout=timeout)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\SANK\Projects\rag_pipeline\.venv\Lib\site-packages\requests\adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='bbmp.gov.in', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)')))
+2026-03-01 00:24:14,425 | INFO | Scraped https://bbmptax.karnataka.gov.in/ (len=428)
+2026-03-01 00:24:18,645 | INFO | Scraped https://rdpr.karnataka.gov.in/ (len=3621)
+2026-03-01 00:24:19,555 | INFO | Scraped https://sevasindhu.karnataka.gov.in/ (len=5542)
+2026-03-01 00:24:19,568 | INFO | Saved 16 documents to D:\SANK\Projects\rag_pipeline\data\raw\raw_documents.json
+2026-03-01 00:35:14,913 | INFO | Starting scraper...
+2026-03-01 00:35:14,914 | INFO | Loaded 30 URL entries
+2026-03-01 00:35:16,493 | INFO | Scraped https://dpal.karnataka.gov.in/ (len=3621)
+2026-03-01 00:35:17,246 | WARNING | Low text extraction for https://kla.kar.nic.in/assembly/legislation/legislation.htm (len=26)
+2026-03-01 00:35:17,408 | WARNING | Low text extraction for https://kla.kar.nic.in/assembly/gazette/gazette.htm (len=110)
+2026-03-01 00:35:17,543 | WARNING | Low text extraction for https://kla.kar.nic.in/assembly/bills/bills.htm (len=110)
+2026-03-01 00:35:20,715 | INFO | Scraped https://rdpr.karnataka.gov.in/40/important-policy-documents-and-rules/en (len=3205)
+2026-03-01 00:35:21,835 | INFO | Scraped https://rdpr.karnataka.gov.in/storage/pdf-files/PR%20ACT/Panchayat_Raj_Act.pdf (len=747)
+2026-03-01 00:35:23,292 | INFO | Scraped https://rdpr.karnataka.gov.in/42/the-karnataka-state-decentralised-planning-and-development-committee/en (len=20544)
+2026-03-01 00:35:27,552 | INFO | Scraped https://rdpr.karnataka.gov.in/ (len=3621)
+2026-03-01 00:35:28,502 | INFO | Scraped https://kuwsdb.karnataka.gov.in/ (len=3621)
+2026-03-01 00:35:35,238 | ERROR | Failed scraping https://kuwsdb.karnataka.gov.in/english: All attempts failed for https://kuwsdb.karnataka.gov.in/english: 500 Server Error: Internal Server Error for url: https://kuwsdb.karnataka.gov.in/english
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://kuwsdb.karnataka.gov.in/english: 500 Server Error: Internal Server Error for url: https://kuwsdb.karnataka.gov.in/english
+2026-03-01 00:35:40,056 | ERROR | Failed scraping https://pwd.karnataka.gov.in/: All attempts failed for https://pwd.karnataka.gov.in/: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://pwd.karnataka.gov.in/: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:35:44,872 | ERROR | Failed scraping https://pwd.karnataka.gov.in/english: All attempts failed for https://pwd.karnataka.gov.in/english: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://pwd.karnataka.gov.in/english: HTTPSConnectionPool(host='pwd.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='pwd.karnataka.gov.in', port=443): Failed to resolve 'pwd.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:35:49,704 | ERROR | Failed scraping https://dma.karnataka.gov.in/: All attempts failed for https://dma.karnataka.gov.in/: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://dma.karnataka.gov.in/: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:35:54,511 | ERROR | Failed scraping https://dma.karnataka.gov.in/english: All attempts failed for https://dma.karnataka.gov.in/english: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://dma.karnataka.gov.in/english: HTTPSConnectionPool(host='dma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by NameResolutionError("HTTPSConnection(host='dma.karnataka.gov.in', port=443): Failed to resolve 'dma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:36:00,827 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/english: All attempts failed for https://ksdma.karnataka.gov.in/english: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://ksdma.karnataka.gov.in/english: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /english (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:36:06,968 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/31/institutional-mechanism/en: All attempts failed for https://ksdma.karnataka.gov.in/31/institutional-mechanism/en: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://ksdma.karnataka.gov.in/31/institutional-mechanism/en: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /31/institutional-mechanism/en (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:36:40,314 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en: All attempts failed for https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://ksdma.karnataka.gov.in/30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /30/%E0%B2%A6%E0%B3%83%E0%B2%B7%E0%B3%8D%E0%B2%9F%E0%B2%BF%E0%B2%95%E0%B3%8B%E0%B2%A8/en (Caused by ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+2026-03-01 00:36:48,746 | ERROR | Failed scraping https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf: All attempts failed for https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://ksdma.karnataka.gov.in/storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf: ssl_error: HTTPSConnectionPool(host='ksdma.karnataka.gov.in', port=443): Max retries exceeded with url: /storage/pdf-files/ActionplanforFloodriskmanagement2021.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1077)')))
+2026-03-01 00:36:53,582 | ERROR | Failed scraping https://sdma.karnataka.gov.in/: All attempts failed for https://sdma.karnataka.gov.in/: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://sdma.karnataka.gov.in/: HTTPSConnectionPool(host='sdma.karnataka.gov.in', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='sdma.karnataka.gov.in', port=443): Failed to resolve 'sdma.karnataka.gov.in' ([Errno 11001] getaddrinfo failed)"))
+2026-03-01 00:36:54,213 | WARNING | No text extracted for https://eproc.karnataka.gov.in/
+2026-03-01 00:36:54,792 | ERROR | Failed scraping https://eproc.karnataka.gov.in/eportal/index.seam: All attempts failed for https://eproc.karnataka.gov.in/eportal/index.seam: 404 Client Error: Not Found for url: https://eproc.karnataka.gov.in/eportal/index.seam
+Traceback (most recent call last):
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 174, in scrape_documents
+    fetched = fetch_url_with_fallbacks(session, url, logger)
+  File "D:\SANK\Projects\rag_pipeline\scraper\scraper.py", line 158, in fetch_url_with_fallbacks
+    raise RuntimeError(f"All attempts failed for {url}: {attempts[-1]['error'] if attempts else 'unknown error'}")
+RuntimeError: All attempts failed for https://eproc.karnataka.gov.in/eportal/index.seam: 404 Client Error: Not Found for url: https://eproc.karnataka.gov.in/eportal/index.seam
+2026-03-01 00:37:01,606 | INFO | Scraped https://sakala.karnataka.gov.in/ (len=5542)
+2026-03-01 00:37:02,461 | INFO | Scraped http://sakala.kar.nic.in (len=5542)
+2026-03-01 00:37:04,230 | INFO | Scraped https://bangalorerural.nic.in/en/service/sakala-guarantee-of-services-to-citizens/ (len=575)
+2026-03-01 00:37:05,337 | INFO | Scraped https://bengaluruurban.nic.in/en/service/sakala-services/ (len=537)
+2026-03-01 00:37:07,887 | INFO | Scraped https://rdpr.karnataka.gov.in/89/panchayat-raj-matter/en (len=85164)
+2026-03-01 00:37:14,337 | WARNING | Retrying with verify=False for https://bbmp.gov.in/
+2026-03-01 00:37:14,537 | WARNING | No text extracted for https://bbmp.gov.in/
+2026-03-01 00:37:15,165 | INFO | Scraped https://bbmptax.karnataka.gov.in/ (len=428)
+2026-03-01 00:37:19,358 | INFO | Scraped https://rdpr.karnataka.gov.in/ (len=3621)
+2026-03-01 00:37:20,396 | INFO | Scraped https://sevasindhu.karnataka.gov.in/ (len=5542)
+2026-03-01 00:37:20,400 | INFO | Saved 14 documents to D:\SANK\Projects\rag_pipeline\data\raw\raw_documents.json
+2026-03-01 00:37:20,401 | INFO | Saved 16 failed URLs to D:\SANK\Projects\rag_pipeline\data\raw\failed_urls.json
