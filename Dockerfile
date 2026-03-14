@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN cd backend && npm install
-RUN pip install -r backend/requirements.txt
+RUN pip install --break-system-packages -r backend/requirements.txt
 
 WORKDIR /app/backend
 
