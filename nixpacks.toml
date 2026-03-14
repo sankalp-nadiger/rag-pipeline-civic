@@ -1,0 +1,8 @@
+[phases.install]
+cmds = [
+  "cd backend && npm install",
+  "pip install -r backend/requirements.txt"
+]
+
+[start]
+cmd = "cd backend && npm start"
