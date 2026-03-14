@@ -175,25 +175,14 @@ async function answerWithRag(question, topK = 5) {
   const chunks = await retrieveRelevantChunks(question, topK);
   const prompt = buildPrompt(question, chunks);
   console.log(
-    `[RAG] Sending prompt to Ollama model=${config.ollamaChatModel} (chunks=${chunks.length})`
+    `[RAG] Sending prompt to ${getEffectiveProvider().toUpperCase()} (chunks=${chunks.length})`
   );
 
-  const completion = await callOllamaGenerate({
-    baseUrl: config.ollamaBaseUrl,
-    timeoutMs: config.ollamaTimeoutMs,
-    payload: {
-      model: config.ollamaChatModel,
-      prompt,
-      stream: false,
-      options: {
-        temperature: 0.2,
-        num_predict: config.ollamaNumPredict,
-      },
-    },
+  const answer = await generateTextFromPrompt(prompt, {
+    temperature: 0.2,
+    maxTokens: config.ollamaNumPredict,
   });
-
-  const answer = String(completion.response || "").trim();
-  console.log(`[RAG] Ollama response received (answerLen=${answer.length})`);
+  console.log(`[RAG] Model response received (answerLen=${answer.length})`);
   const citations = chunks.map((chunk, idx) => ({
     id: idx + 1,
     chunk_id: chunk.chunk_id,
@@ -298,7 +287,7 @@ async function answerGovEmployeeFromDb(question) {
     if (!rows.length) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
     const lines = rows.map((r) => `${r._id}: ${r.count}`).join(", ");
     const factual = `Complaint counts by department: ${lines}.`;
-    const answer = await generateGovEmpOllamaAnswer(question, factual);
+    const answer = await generateGovEmpAnswer(question, factual);
     return { answer, citations: [], mode: "govemp_db" };
   }
 
@@ -328,7 +317,7 @@ async function answerGovEmployeeFromDb(question) {
     if (!rows.length) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
     const lines = rows.map((r) => `${r._id || "Unknown"}: ${r.count}`).join(", ");
     const factual = `Complaint counts by area: ${lines}.`;
-    const answer = await generateGovEmpOllamaAnswer(question, factual);
+    const answer = await generateGovEmpAnswer(question, factual);
     return { answer, citations: [], mode: "govemp_db" };
   }
 
@@ -374,11 +363,11 @@ async function answerGovEmployeeFromDb(question) {
 
   const suffix = filters.length ? ` for ${filters.join(", ")}` : "";
   const factual = `Total complaints${suffix}: ${count}.`;
-  const answer = await generateGovEmpOllamaAnswer(question, factual);
+  const answer = await generateGovEmpAnswer(question, factual);
   return { answer, citations: [], mode: "govemp_db" };
 }
 
-async function generateGovEmpOllamaAnswer(question, factualLine) {
+async function generateGovEmpAnswer(question, factualLine) {
   try {
     const prompt = [
       "You are a government complaint assistant.",
@@ -390,25 +379,66 @@ async function generateGovEmpOllamaAnswer(question, factualLine) {
       `Factual data: ${factualLine}`,
     ].join("\n");
 
-    const completion = await callOllamaGenerate({
-      baseUrl: config.ollamaBaseUrl,
-      timeoutMs: config.ollamaTimeoutMs,
-      payload: {
-        model: config.ollamaChatModel,
-        prompt,
-        stream: false,
-        options: {
-          temperature: 0.1,
-          num_predict: Math.min(config.ollamaNumPredict, 96),
-        },
-      },
+    const text = await generateTextFromPrompt(prompt, {
+      temperature: 0.1,
+      maxTokens: Math.min(config.ollamaNumPredict, 96),
     });
-    const text = String(completion.response || "").trim();
     return text || factualLine;
   } catch (err) {
-    console.error("[RAG] GovEmp Ollama generation failed, using factual fallback:", err.message);
+    console.error(
+      "[RAG] GovEmp generation failed, using factual fallback:",
+      err.message
+    );
     return factualLine;
   }
+}
+
+function getEffectiveProvider() {
+  if (config.prodEnv) return "groq";
+  const configured = String(config.llmProvider || "").toLowerCase();
+  return configured === "groq" ? "groq" : "ollama";
+}
+
+async function generateTextFromPrompt(prompt, { temperature, maxTokens }) {
+  const provider = getEffectiveProvider();
+
+  if (provider === "groq") {
+    if (!config.groqApiKey) {
+      throw new Error("GROQ_API_KEY is required when prod_env=true");
+    }
+
+    const completion = await callGroqChatCompletions({
+      baseUrl: config.groqApiBaseUrl,
+      timeoutMs: config.groqTimeoutMs,
+      apiKey: config.groqApiKey,
+      payload: {
+        model: config.groqChatModel,
+        messages: [{ role: "user", content: prompt }],
+        temperature,
+        max_tokens: Math.min(maxTokens, config.groqMaxTokens),
+      },
+    });
+
+    const text = String(completion?.choices?.[0]?.message?.content || "").trim();
+    if (!text) throw new Error("Groq returned an empty response");
+    return text;
+  }
+
+  const completion = await callOllamaGenerate({
+    baseUrl: config.ollamaBaseUrl,
+    timeoutMs: config.ollamaTimeoutMs,
+    payload: {
+      model: config.ollamaChatModel,
+      prompt,
+      stream: false,
+      options: {
+        temperature,
+        num_predict: maxTokens,
+      },
+    },
+  });
+
+  return String(completion.response || "").trim();
 }
 
 function callOllamaGenerate({ baseUrl, payload, timeoutMs }) {
@@ -450,6 +480,51 @@ function callOllamaGenerate({ baseUrl, payload, timeoutMs }) {
 
     req.setTimeout(timeoutMs, () => {
       req.destroy(new Error(`Ollama request timed out after ${timeoutMs}ms`));
+    });
+    req.on("error", (err) => reject(err));
+    req.write(body);
+    req.end();
+  });
+}
+
+function callGroqChatCompletions({ baseUrl, payload, timeoutMs, apiKey }) {
+  return new Promise((resolve, reject) => {
+    const endpoint = new URL("/chat/completions", baseUrl);
+    const client = endpoint.protocol === "https:" ? https : http;
+    const body = JSON.stringify(payload);
+
+    const req = client.request(
+      endpoint,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+        },
+      },
+      (res) => {
+        let raw = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => {
+          raw += chunk;
+        });
+        res.on("end", () => {
+          if ((res.statusCode || 500) >= 400) {
+            reject(new Error(`Groq generation failed: ${res.statusCode} ${raw}`));
+            return;
+          }
+          try {
+            resolve(JSON.parse(raw));
+          } catch (err) {
+            reject(new Error(`Invalid Groq JSON response: ${err.message}`));
+          }
+        });
+      }
+    );
+
+    req.setTimeout(timeoutMs, () => {
+      req.destroy(new Error(`Groq request timed out after ${timeoutMs}ms`));
     });
     req.on("error", (err) => reject(err));
     req.write(body);
