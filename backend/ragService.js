@@ -489,7 +489,7 @@ function callOllamaGenerate({ baseUrl, payload, timeoutMs }) {
 
 function callGroqChatCompletions({ baseUrl, payload, timeoutMs, apiKey }) {
   return new Promise((resolve, reject) => {
-    const endpoint = new URL("/chat/completions", baseUrl);
+    const endpoint = new URL(baseUrl.replace(/\/+$/, "") + "/chat/completions");
     const client = endpoint.protocol === "https:" ? https : http;
     const body = JSON.stringify(payload);
 
