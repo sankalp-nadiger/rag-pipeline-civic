@@ -8,6 +8,14 @@ const parseBooleanEnv = (value) => {
   return normalized === "true" || normalized === "1" || normalized === "yes";
 };
 
+const parseNumberEnv = (...values) => {
+  for (const value of values) {
+    const num = Number(value);
+    if (Number.isFinite(num) && num > 0) return num;
+  }
+  return undefined;
+};
+
 const isProdEnv = parseBooleanEnv(process.env.prod_env);
 
 module.exports = {
@@ -39,6 +47,12 @@ module.exports = {
   ollamaBaseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434",
   ollamaChatModel: process.env.OLLAMA_CHAT_MODEL || "llama3:8b",
   ollamaNumPredict: Number(process.env.OLLAMA_NUM_PREDICT || 256),
-  embedTimeoutMs: Number(process.env.EMBED_TIMEOUT_MS || 120000),
+  embedTimeoutMs:
+    parseNumberEnv(
+      process.env.EMBED_TIMEOUT_MS,
+      process.env.EMBED_MODEL_TIMEOUT_MS,
+      process.env.EMBED_MODEL_TIMEOUT,
+      process.env.EMBED_TIMEOUT
+    ) || 120000,
   ollamaTimeoutMs: Number(process.env.OLLAMA_TIMEOUT_MS || 120000),
 };

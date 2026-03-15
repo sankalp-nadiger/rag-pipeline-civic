@@ -11,11 +11,32 @@ let workerReady = false;
 let reqSeq = 0;
 const pending = new Map();
 const NO_DATA_TEXT = "data not available, pls try asking again";
+const EMBED_WORKER_STDERR_MAX = 8;
+let embedWorkerLastStderr = [];
+
+function captureEmbedWorkerStderr(line) {
+  if (!line) return;
+  embedWorkerLastStderr.push(line);
+  if (embedWorkerLastStderr.length > EMBED_WORKER_STDERR_MAX) {
+    embedWorkerLastStderr = embedWorkerLastStderr.slice(-EMBED_WORKER_STDERR_MAX);
+  }
+}
+
+function formatEmbedWorkerDebug() {
+  const stderrSummary = embedWorkerLastStderr.length
+    ? embedWorkerLastStderr.join(" | ")
+    : "no-stderr-captured";
+  return `pythonCommand=${config.pythonCommand} script=${config.embeddingScriptPath} timeoutMs=${config.embedTimeoutMs} lastStderr=${stderrSummary}`;
+}
 
 function startEmbedWorker() {
   if (embedWorker && !embedWorker.killed) return;
 
   const scriptPath = path.resolve(__dirname, config.embeddingScriptPath);
+  console.log(
+    `[RAG] Starting embed worker | python=${config.pythonCommand} | script=${scriptPath} | timeoutMs=${config.embedTimeoutMs}`
+  );
+  embedWorkerLastStderr = [];
   embedWorker = spawn(config.pythonCommand, [scriptPath], {
     cwd: path.resolve(__dirname, ".."),
     stdio: ["pipe", "pipe", "pipe"],
@@ -46,7 +67,23 @@ function startEmbedWorker() {
   });
 
   embedWorker.stderr.on("data", (chunk) => {
-    console.error("[RAG][embed-worker][stderr]", chunk.toString().trim());
+    const line = chunk.toString().trim();
+    captureEmbedWorkerStderr(line);
+    console.error("[RAG][embed-worker][stderr]", line);
+  });
+
+  embedWorker.on("error", (err) => {
+    console.error("[RAG] Embedding worker failed to start:", err.message);
+    workerReady = false;
+    for (const [, req] of pending) {
+      clearTimeout(req.timer);
+      req.reject(
+        new Error(
+          `Embedding worker process error: ${err.message}. ${formatEmbedWorkerDebug()}`
+        )
+      );
+    }
+    pending.clear();
   });
 
   embedWorker.on("close", (code) => {
@@ -124,7 +161,7 @@ function embedText(text) {
           pending.delete(id);
           reject(
             new Error(
-              `Embedding worker startup timed out after ${config.embedTimeoutMs}ms`
+              `Embedding worker startup timed out after ${config.embedTimeoutMs}ms. ${formatEmbedWorkerDebug()}`
             )
           );
         }
@@ -197,7 +234,7 @@ async function answerWithRag(question, topK = 5) {
 
 function parseGovEmpIntent(question) {
   const q = question.toLowerCase();
-  const pendingWords = ["pending", "not solved", "open", "in progress"];
+  const pendingWords = ["pending", "not solved", "open", "in progress","unresolved", "assigned", "investigating", "reopened"];
   const resolvedWords = ["resolved", "closed", "completed", "solved"];
 
   const departmentMatch = question.match(
