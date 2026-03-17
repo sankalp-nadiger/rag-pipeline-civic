@@ -47,6 +47,26 @@ module.exports = {
   ollamaBaseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434",
   ollamaChatModel: process.env.OLLAMA_CHAT_MODEL || "llama3:8b",
   ollamaNumPredict: Number(process.env.OLLAMA_NUM_PREDICT || 256),
+  analyticsDefaultWindowDays: Number(
+    process.env.ANALYTICS_DEFAULT_WINDOW_DAYS || 7
+  ),
+  analyticsMinSampleSize: Number(process.env.ANALYTICS_MIN_SAMPLE_SIZE || 20),
+  analyticsConfidenceFloor: Number(
+    process.env.ANALYTICS_CONFIDENCE_FLOOR || 0.45
+  ),
+  analyticsTimeoutMs: Number(process.env.ANALYTICS_TIMEOUT_MS || 120000),
+  weatherApiProvider: process.env.WEATHER_API_PROVIDER || "open-meteo",
+  weatherApiKey: process.env.WEATHER_API_KEY || "",
+  weatherApiBaseUrl:
+    process.env.WEATHER_API_BASE_URL ||
+    "https://api.open-meteo.com/v1/forecast",
+  weatherGeocodeBaseUrl:
+    process.env.WEATHER_GEOCODE_BASE_URL ||
+    "https://geocoding-api.open-meteo.com/v1/search",
+  weatherLocationQuery: process.env.WEATHER_LOCATION_QUERY || "Bengaluru,IN",
+  weatherLatitude: process.env.WEATHER_LATITUDE || "",
+  weatherLongitude: process.env.WEATHER_LONGITUDE || "",
+  weatherTimezone: process.env.WEATHER_TIMEZONE || "auto",
   embedTimeoutMs:
     parseNumberEnv(
       process.env.EMBED_TIMEOUT_MS,
