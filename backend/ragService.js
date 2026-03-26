@@ -307,10 +307,10 @@ function candidateNameVariants(name) {
   return Array.from(variants);
 }
 
-function findBestNamedEntityInQuestion(question, candidates) {
+function findBestNamedEntityMatch(question, candidates) {
   const normalizedQuestion = normalizeMatchText(question);
   if (!normalizedQuestion || !Array.isArray(candidates) || !candidates.length) {
-    return null;
+    return { entity: null, score: 0 };
   }
 
   let best = null;
@@ -341,7 +341,19 @@ function findBestNamedEntityInQuestion(question, candidates) {
     }
   }
 
-  return best;
+  return { entity: best, score: bestScore };
+}
+
+function findBestNamedEntityInQuestion(question, candidates) {
+  return findBestNamedEntityMatch(question, candidates).entity;
+}
+
+function isLikelyComplaintCountQuestion(question) {
+  const q = String(question || "");
+  return (
+    /\b(how many|count|total|number of)\b/i.test(q) &&
+    /\bcomplaints?\b/i.test(q)
+  );
 }
 
 async function answerGovEmployeeFromDb(question) {
@@ -423,11 +435,18 @@ async function answerGovEmployeeFromDb(question) {
   }
 
   let departmentDoc = null;
-  let deptCandidates = null;
-  if (intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question)) {
-    deptCandidates = await departmentsCol
-      .find({}, { projection: { name: 1 } })
-      .toArray();
+  let areaDoc = null;
+  const hasDepartmentHint = intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question);
+  const hasAreaHint = intent.areaName || /\barea\b|\bward\b|\bzone\b|\bpanchayat\b|\bcity\b|\bvillage\b|\blocality\b/i.test(question);
+  const genericCountIntent = isLikelyComplaintCountQuestion(question);
+
+  let deptCandidates = [];
+  let areaCandidates = [];
+  if (hasDepartmentHint || genericCountIntent) {
+    deptCandidates = await departmentsCol.find({}, { projection: { name: 1 } }).toArray();
+  }
+  if (hasAreaHint || genericCountIntent) {
+    areaCandidates = await areasCol.find({}, { projection: { name: 1 } }).toArray();
   }
 
   if (intent.departmentName && deptCandidates?.length) {
@@ -435,26 +454,47 @@ async function answerGovEmployeeFromDb(question) {
       deptCandidates.find((d) => textContains(d.name, intent.departmentName)) || null;
   }
 
-  if (!departmentDoc && deptCandidates?.length) {
+  if (intent.areaName && areaCandidates?.length) {
+    areaDoc = areaCandidates.find((a) => textContains(a.name, intent.areaName)) || null;
+  }
+
+  if (!departmentDoc && deptCandidates?.length && hasDepartmentHint) {
     departmentDoc = findBestNamedEntityInQuestion(question, deptCandidates);
   }
 
-  if (intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question)) {
-    if (!departmentDoc) {
-      return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+  if (!areaDoc && areaCandidates?.length && hasAreaHint) {
+    areaDoc = findBestNamedEntityInQuestion(question, areaCandidates);
+  }
+
+  if (!departmentDoc && !areaDoc && genericCountIntent) {
+    const deptMatch = findBestNamedEntityMatch(question, deptCandidates);
+    const areaMatch = findBestNamedEntityMatch(question, areaCandidates);
+
+    if (deptMatch.score > 0 || areaMatch.score > 0) {
+      if (deptMatch.score >= areaMatch.score + 8) {
+        departmentDoc = deptMatch.entity;
+      } else if (areaMatch.score > deptMatch.score) {
+        areaDoc = areaMatch.entity;
+      } else {
+        departmentDoc = deptMatch.entity || null;
+      }
     }
+  }
+
+  if (hasDepartmentHint && !departmentDoc) {
+    return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+  }
+  if (departmentDoc) {
     complaintMatch.departmentId = departmentDoc._id;
   }
 
-  let areaDoc = null;
-  if (intent.areaName) {
-    const areaCandidates = await areasCol.find({}, { projection: { name: 1 } }).toArray();
-    areaDoc = areaCandidates.find((a) => textContains(a.name, intent.areaName)) || null;
-    if (areaDoc) {
-      complaintMatch.areaId = areaDoc._id;
-    } else {
-      complaintMatch.location = { $regex: intent.areaName, $options: "i" };
-    }
+  if (hasAreaHint && !areaDoc) {
+    return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+  }
+  if (areaDoc) {
+    complaintMatch.areaId = areaDoc._id;
+  } else if (intent.areaName) {
+    complaintMatch.location = { $regex: intent.areaName, $options: "i" };
   }
 
   if (intent.contractorName) {
