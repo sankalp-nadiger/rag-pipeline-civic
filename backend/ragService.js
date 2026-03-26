@@ -10,8 +10,9 @@ let embedRl;
 let workerReady = false;
 let reqSeq = 0;
 const pending = new Map();
-const NO_DATA_TEXT = "data not available, pls try asking again";
+const NO_DATA_TEXT = "Data not available, please try asking again";
 const EMBED_WORKER_STDERR_MAX = 8;
+const DEFAULT_AREA_RADIUS_KM = 3.5;
 let embedWorkerLastStderr = [];
 
 function captureEmbedWorkerStderr(line) {
@@ -348,6 +349,120 @@ function findBestNamedEntityInQuestion(question, candidates) {
   return findBestNamedEntityMatch(question, candidates).entity;
 }
 
+function extractAreaLikePhrase(question) {
+  const q = String(question || "");
+
+  const explicit = q.match(
+    /(area|ward|zone|panchayat|city|village|locality)\s+(?:named|name|called)?\s*[:\-]?\s*([a-z0-9&().,\- ]+)/i
+  );
+  if (explicit?.[2]) return explicit[2].trim();
+
+  const generic = q.match(/\b(?:in|at|near)\s+([a-z0-9&().,\- ]+?)(?:\?|$)/i);
+  if (!generic?.[1]) return "";
+  const candidate = generic[1].trim();
+
+  if (/\bdepartment\b|\bdept\b|\bcontractor\b|\bvendor\b/i.test(candidate)) {
+    return "";
+  }
+  return candidate;
+}
+
+function parseLocationCoordinates(value) {
+  const text = String(value || "").trim();
+  if (!text) return null;
+
+  // Supports patterns like "Location: 12.294893, 76.633146"
+  const m = text.match(/(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/);
+  if (!m) return null;
+
+  const lat = Number(m[1]);
+  const lon = Number(m[2]);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+  if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+  return { lat, lon };
+}
+
+function toRadians(deg) {
+  return (Number(deg || 0) * Math.PI) / 180;
+}
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+async function geocodeAreaToPoint(areaName) {
+  const name = String(areaName || "").trim();
+  if (!name) return { ok: false, reason: "empty-area-name" };
+
+  const geo = new URL(config.weatherGeocodeBaseUrl);
+  geo.searchParams.set("name", name);
+  geo.searchParams.set("count", "1");
+  geo.searchParams.set("language", "en");
+  geo.searchParams.set("format", "json");
+
+  const geoResp = await httpGetJson(geo, config.analyticsTimeoutMs);
+  if (!geoResp.ok) {
+    return { ok: false, reason: `geocoding-failed:${geoResp.status}` };
+  }
+
+  const point = geoResp.data?.results?.[0];
+  if (!point) {
+    return { ok: false, reason: "no-geocoding-result" };
+  }
+
+  const lat = Number(point.latitude);
+  const lon = Number(point.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    return { ok: false, reason: "invalid-geocode-coordinates" };
+  }
+
+  return {
+    ok: true,
+    name: String(point.name || name),
+    lat,
+    lon,
+  };
+}
+
+async function countComplaintsWithinRadiusKm({
+  complaintsCol,
+  complaintMatch,
+  centerLat,
+  centerLon,
+  radiusKm,
+}) {
+  const rows = await complaintsCol
+    .find(complaintMatch, { projection: { location: 1 } })
+    .toArray();
+
+  let withCoordinates = 0;
+  let withinRadius = 0;
+  for (const row of rows) {
+    const point = parseLocationCoordinates(row.location);
+    if (!point) continue;
+    withCoordinates += 1;
+    const distKm = haversineKm(centerLat, centerLon, point.lat, point.lon);
+    if (distKm <= radiusKm) withinRadius += 1;
+  }
+
+  return {
+    count: withinRadius,
+    scanned: rows.length,
+    withCoordinates,
+    radiusKm,
+  };
+}
+
 function isLikelyComplaintCountQuestion(question) {
   const q = String(question || "");
   return (
@@ -360,7 +475,6 @@ async function answerGovEmployeeFromDb(question) {
   const db = await getDb();
   const complaintsCol = db.collection(config.complaintCollectionName);
   const departmentsCol = db.collection(config.departmentCollectionName);
-  const areasCol = db.collection(config.areaCollectionName);
 
   const complaintCount = await complaintsCol.countDocuments({});
   if (complaintCount === 0) {
@@ -436,17 +550,17 @@ async function answerGovEmployeeFromDb(question) {
 
   let departmentDoc = null;
   let areaDoc = null;
+  let areaGeoPoint = null;
   const hasDepartmentHint = intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question);
-  const hasAreaHint = intent.areaName || /\barea\b|\bward\b|\bzone\b|\bpanchayat\b|\bcity\b|\bvillage\b|\blocality\b/i.test(question);
+  const extractedAreaPhrase = intent.areaName || extractAreaLikePhrase(question);
+  const hasAreaHint =
+    !!extractedAreaPhrase ||
+    /\barea\b|\bward\b|\bzone\b|\bpanchayat\b|\bcity\b|\bvillage\b|\blocality\b/i.test(question);
   const genericCountIntent = isLikelyComplaintCountQuestion(question);
 
   let deptCandidates = [];
-  let areaCandidates = [];
   if (hasDepartmentHint || genericCountIntent) {
     deptCandidates = await departmentsCol.find({}, { projection: { name: 1 } }).toArray();
-  }
-  if (hasAreaHint || genericCountIntent) {
-    areaCandidates = await areasCol.find({}, { projection: { name: 1 } }).toArray();
   }
 
   if (intent.departmentName && deptCandidates?.length) {
@@ -454,30 +568,14 @@ async function answerGovEmployeeFromDb(question) {
       deptCandidates.find((d) => textContains(d.name, intent.departmentName)) || null;
   }
 
-  if (intent.areaName && areaCandidates?.length) {
-    areaDoc = areaCandidates.find((a) => textContains(a.name, intent.areaName)) || null;
-  }
-
   if (!departmentDoc && deptCandidates?.length && hasDepartmentHint) {
     departmentDoc = findBestNamedEntityInQuestion(question, deptCandidates);
   }
 
-  if (!areaDoc && areaCandidates?.length && hasAreaHint) {
-    areaDoc = findBestNamedEntityInQuestion(question, areaCandidates);
-  }
-
-  if (!departmentDoc && !areaDoc && genericCountIntent) {
+  if (!departmentDoc && genericCountIntent && deptCandidates?.length) {
     const deptMatch = findBestNamedEntityMatch(question, deptCandidates);
-    const areaMatch = findBestNamedEntityMatch(question, areaCandidates);
-
-    if (deptMatch.score > 0 || areaMatch.score > 0) {
-      if (deptMatch.score >= areaMatch.score + 8) {
-        departmentDoc = deptMatch.entity;
-      } else if (areaMatch.score > deptMatch.score) {
-        areaDoc = areaMatch.entity;
-      } else {
-        departmentDoc = deptMatch.entity || null;
-      }
+    if (deptMatch.score > 0) {
+      departmentDoc = deptMatch.entity;
     }
   }
 
@@ -488,13 +586,15 @@ async function answerGovEmployeeFromDb(question) {
     complaintMatch.departmentId = departmentDoc._id;
   }
 
-  if (hasAreaHint && !areaDoc) {
+  if (extractedAreaPhrase) {
+    const geo = await geocodeAreaToPoint(extractedAreaPhrase);
+    if (!geo.ok) {
+      return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
+    }
+    areaDoc = { name: extractedAreaPhrase };
+    areaGeoPoint = geo;
+  } else if (hasAreaHint) {
     return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
-  }
-  if (areaDoc) {
-    complaintMatch.areaId = areaDoc._id;
-  } else if (intent.areaName) {
-    complaintMatch.location = { $regex: intent.areaName, $options: "i" };
   }
 
   if (intent.contractorName) {
@@ -505,7 +605,21 @@ async function answerGovEmployeeFromDb(question) {
     ];
   }
 
-  const count = await complaintsCol.countDocuments(complaintMatch);
+  let count = 0;
+  let areaRadiusStats = null;
+  if (areaGeoPoint) {
+    areaRadiusStats = await countComplaintsWithinRadiusKm({
+      complaintsCol,
+      complaintMatch,
+      centerLat: areaGeoPoint.lat,
+      centerLon: areaGeoPoint.lon,
+      radiusKm: DEFAULT_AREA_RADIUS_KM,
+    });
+    count = areaRadiusStats.count;
+  } else {
+    count = await complaintsCol.countDocuments(complaintMatch);
+  }
+
   if (!count) return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
 
   const filters = [];
@@ -516,7 +630,10 @@ async function answerGovEmployeeFromDb(question) {
   if (intent.contractorName) filters.push(`contractor ${intent.contractorName}`);
 
   const suffix = filters.length ? ` for ${filters.join(", ")}` : "";
-  const factual = `Total complaints${suffix}: ${count}.`;
+  const radiusNote = areaRadiusStats
+    ? ` within ${DEFAULT_AREA_RADIUS_KM}km radius of ${areaGeoPoint.name || areaDoc?.name || "requested location"}`
+    : "";
+  const factual = `Total complaints${suffix}${radiusNote}: ${count}.`;
   const answer = await generateGovEmpAnswer(question, factual);
   return { answer, citations: [], mode: "govemp_db" };
 }
