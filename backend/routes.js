@@ -2,6 +2,7 @@ const express = require("express");
 const {
   answerWithRag,
   answerGovEmployeeFromDb,
+  generateRecommendedQuestions,
   getPredictiveAnalytics,
 } = require("./ragService");
 
@@ -24,10 +25,18 @@ router.post("/ragChat", async (req, res) => {
     const result = govemp
       ? await answerGovEmployeeFromDb(question)
       : await answerWithRag(question, topK);
-    console.log(
-      `[RAG] Completed /ragChat | citations=${result.citations?.length || 0}`
+    const recommendedQuestions = await generateRecommendedQuestions(
+      question,
+      result.answer,
+      govemp ? "govemp" : "rag"
     );
-    return res.json(result);
+    console.log(
+      `[RAG] Completed /ragChat | citations=${result.citations?.length || 0} | recommended=${recommendedQuestions.length}`
+    );
+    return res.json({
+      ...result,
+      recommendedQuestions,
+    });
   } catch (error) {
     console.error("ragChat error:", error);
     return res.status(500).json({

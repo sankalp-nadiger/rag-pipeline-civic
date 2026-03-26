@@ -670,6 +670,16 @@ function getEffectiveProvider() {
   return configured === "groq" ? "groq" : "ollama";
 }
 
+function capTokensForProvider(requested, defaultLimit = 220) {
+  const provider = getEffectiveProvider();
+  const fallback = Number(defaultLimit || 220);
+  const asked = Number(requested || fallback);
+  if (provider === "groq") {
+    return Math.min(asked, Number(config.groqMaxTokens || 256));
+  }
+  return Math.min(asked, Number(config.ollamaNumPredict || 256));
+}
+
 async function generateTextFromPrompt(prompt, { temperature, maxTokens }) {
   const provider = getEffectiveProvider();
 
@@ -1060,6 +1070,203 @@ function tryParseHeadlineDescription(text) {
     headline: parts[0].replace(/^headline\s*[:\-]?/i, "").trim(),
     description: parts.slice(1).join(" ").replace(/^description\s*[:\-]?/i, "").trim(),
   };
+}
+
+function normalizeQuestionCandidate(value) {
+  const text = String(value || "")
+    .replace(/^[\-\d\.)\s]+/, "")
+    .replace(/^['\"`]+|['\"`]+$/g, "")
+    .trim();
+  if (!text) return "";
+  const withMark = /[?]$/.test(text) ? text : `${text}?`;
+  return withMark;
+}
+
+function tryParseQuestionArray(rawText) {
+  const raw = String(rawText || "").trim();
+  if (!raw) return [];
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map((item) => normalizeQuestionCandidate(item))
+        .filter(Boolean);
+    }
+  } catch (_err) {
+    // no-op; continue with line-based parsing
+  }
+
+  return raw
+    .split(/\n+/)
+    .map((line) => normalizeQuestionCandidate(line))
+    .filter(Boolean);
+}
+
+function pickTwoDistinctQuestions(candidates, baseQuestion) {
+  const baseNorm = normalizeMatchText(baseQuestion);
+  const uniq = [];
+  const seen = new Set();
+
+  for (const c of candidates) {
+    const question = normalizeQuestionCandidate(c);
+    const key = normalizeMatchText(question);
+    if (!question || !key || key === baseNorm || seen.has(key)) continue;
+    seen.add(key);
+    uniq.push(question);
+  }
+
+  for (let i = uniq.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = uniq[i];
+    uniq[i] = uniq[j];
+    uniq[j] = tmp;
+  }
+
+  return uniq.slice(0, 2);
+}
+
+function fallbackRecommendedQuestions(question) {
+  const rawTopic =
+    String(question || "")
+      .replace(/[?]/g, "")
+      .trim() || "this issue";
+  const topic = rawTopic.length > 80 ? `${rawTopic.slice(0, 77)}...` : rawTopic;
+
+  const perimeterTemplates = [
+    `Which nearby areas are showing similar patterns to ${topic}?`,
+    `How does ${topic} compare across departments or wards this month?`,
+    `What related complaint categories are clustered around ${topic}?`,
+    `Where is the geographic perimeter of ${topic} expanding most quickly?`,
+  ];
+  const depthTemplates = [
+    `What is the root-cause depth behind ${topic}, and which factor appears first?`,
+    `Which service bottleneck is most responsible for delays related to ${topic}?`,
+    `What preventive action would reduce repeat complaints linked to ${topic}?`,
+    `How has closure quality changed over time for issues like ${topic}?`,
+  ];
+
+  const p = perimeterTemplates[Math.floor(Math.random() * perimeterTemplates.length)];
+  const d = depthTemplates[Math.floor(Math.random() * depthTemplates.length)];
+  return pickTwoDistinctQuestions([p, d], question);
+}
+
+function randomPickDistinct(values, count) {
+  const arr = Array.isArray(values) ? [...values] : [];
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr.slice(0, Math.max(0, Number(count || 0)));
+}
+
+function buildGovEmpRecommendedQuestions(question) {
+  const intent = parseGovEmpIntent(question);
+  const areaText = intent.areaName || extractAreaLikePhrase(question) || "this area";
+  const deptText = intent.departmentName || "this department";
+  const contractorText = intent.contractorName || "this contractor";
+
+  const genericPool = [
+    "How many pending complaints are there now?",
+    "How many resolved complaints are there now?",
+    "How many complaints were registered today?",
+    "Which department has the highest pending complaints?",
+    "How many complaints are open by area?",
+    "How many complaints are open by department?",
+  ];
+
+  const areaPool = [
+    `How many complaints are there in ${areaText}?`,
+    `How many resolved complaints are there in ${areaText}?`,
+    `How many pending complaints are there in ${areaText}?`,
+    `Which complaint type is highest in ${areaText}?`,
+  ];
+
+  const departmentPool = [
+    `How many complaints are there in ${deptText}?`,
+    `How many pending complaints are there in ${deptText}?`,
+    `How many resolved complaints are there in ${deptText}?`,
+    `What is the closure rate in ${deptText}?`,
+  ];
+
+  const contractorPool = [
+    `How many complaints are assigned to ${contractorText}?`,
+    `How many pending complaints are assigned to ${contractorText}?`,
+    `How many resolved complaints are completed by ${contractorText}?`,
+  ];
+
+  const statusPool =
+    intent.status === "pending"
+      ? [
+          "How many pending complaints are open by area?",
+          "Which department has the most pending complaints?",
+          "How many pending complaints are older than 7 days?",
+        ]
+      : intent.status === "resolved"
+      ? [
+          "How many resolved complaints were closed this week?",
+          "Which department closed the most complaints this week?",
+          "How many resolved complaints are there by area?",
+        ]
+      : [];
+
+  const combined = [
+    ...genericPool,
+    ...(intent.areaName || areaText !== "this area" ? areaPool : []),
+    ...(intent.departmentName ? departmentPool : []),
+    ...(intent.contractorName ? contractorPool : []),
+    ...statusPool,
+  ];
+
+  const normalized = pickTwoDistinctQuestions(
+    randomPickDistinct(combined, Math.max(8, combined.length)),
+    question
+  );
+
+  if (normalized.length >= 2) return normalized;
+  return randomPickDistinct(genericPool, 2);
+}
+
+async function generateRecommendedQuestions(question, answer, mode) {
+  if (String(mode || "").toLowerCase() === "govemp") {
+    return buildGovEmpRecommendedQuestions(question);
+  }
+
+  const prompt = [
+    "You create follow-up questions for a civic complaint assistant.",
+    "Generate 6 diverse follow-up questions related to the user question.",
+    "Include a blend of: (1) perimeter/scope expansion and (2) service-depth/root-cause analysis.",
+    "Keep each question under 20 words.",
+    "Questions must be practical for governance workflows and must not repeat the original question.",
+    "Return ONLY a JSON array of strings.",
+    "",
+    `Mode: ${mode || "rag"}`,
+    `Original question: ${question}`,
+    `Current answer summary: ${String(answer || "").slice(0, 320)}`,
+    `Variation seed: ${Date.now()}-${Math.floor(Math.random() * 1000000)}`,
+  ].join("\n");
+
+  try {
+    const raw = await generateTextFromPrompt(prompt, {
+      temperature: 0.7,
+      maxTokens: capTokensForProvider(220),
+    });
+
+    const parsed = tryParseQuestionArray(raw);
+    const picked = pickTwoDistinctQuestions(parsed, question);
+    if (picked.length >= 2) return picked;
+
+    const fallback = fallbackRecommendedQuestions(question);
+    if (picked.length) {
+      return pickTwoDistinctQuestions([...picked, ...fallback], question).slice(0, 2);
+    }
+    return fallback;
+  } catch (err) {
+    console.error("[RAG] Failed generating recommended questions:", err.message);
+    return fallbackRecommendedQuestions(question);
+  }
 }
 
 function weatherCodeLabel(code) {
@@ -1463,5 +1670,6 @@ async function getPredictiveAnalytics({ departmentName, language, windowDays }) 
 module.exports = {
   answerWithRag,
   answerGovEmployeeFromDb,
+  generateRecommendedQuestions,
   getPredictiveAnalytics,
 };
