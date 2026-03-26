@@ -280,6 +280,70 @@ function textContains(value, search) {
   return String(value).toLowerCase().includes(String(search).toLowerCase());
 }
 
+function normalizeMatchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeRegex(value) {
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function candidateNameVariants(name) {
+  const normalized = normalizeMatchText(name);
+  if (!normalized) return [];
+
+  const variants = new Set([normalized]);
+  const withoutDept = normalized
+    .replace(/\bdepartment\b/g, " ")
+    .replace(/\bdept\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (withoutDept) variants.add(withoutDept);
+
+  return Array.from(variants);
+}
+
+function findBestNamedEntityInQuestion(question, candidates) {
+  const normalizedQuestion = normalizeMatchText(question);
+  if (!normalizedQuestion || !Array.isArray(candidates) || !candidates.length) {
+    return null;
+  }
+
+  let best = null;
+  let bestScore = 0;
+
+  for (const candidate of candidates) {
+    const candidateName = String(candidate?.name || "").trim();
+    if (!candidateName) continue;
+
+    const variants = candidateNameVariants(candidateName);
+    let score = 0;
+
+    for (const variant of variants) {
+      if (!variant) continue;
+      const bounded = new RegExp(`(^|\\s)${escapeRegex(variant)}(\\s|$)`, "i");
+      if (bounded.test(normalizedQuestion)) {
+        score = Math.max(score, 100 + variant.length);
+        continue;
+      }
+      if (normalizedQuestion.includes(variant)) {
+        score = Math.max(score, 70 + variant.length);
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = candidate;
+    }
+  }
+
+  return best;
+}
+
 async function answerGovEmployeeFromDb(question) {
   const db = await getDb();
   const complaintsCol = db.collection(config.complaintCollectionName);
@@ -359,10 +423,23 @@ async function answerGovEmployeeFromDb(question) {
   }
 
   let departmentDoc = null;
-  if (intent.departmentName) {
-    const deptCandidates = await departmentsCol.find({}, { projection: { name: 1 } }).toArray();
+  let deptCandidates = null;
+  if (intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question)) {
+    deptCandidates = await departmentsCol
+      .find({}, { projection: { name: 1 } })
+      .toArray();
+  }
+
+  if (intent.departmentName && deptCandidates?.length) {
     departmentDoc =
       deptCandidates.find((d) => textContains(d.name, intent.departmentName)) || null;
+  }
+
+  if (!departmentDoc && deptCandidates?.length) {
+    departmentDoc = findBestNamedEntityInQuestion(question, deptCandidates);
+  }
+
+  if (intent.departmentName || /\bdepartment\b|\bdept\b/i.test(question)) {
     if (!departmentDoc) {
       return { answer: NO_DATA_TEXT, citations: [], mode: "govemp_db" };
     }
